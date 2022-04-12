@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.12</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>tric-build</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>tric-build</name>
+    <description>tric-build</description>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://raw.github.com/Zone-lzy/tric_build</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>C:\Users\28124\.m2\repository</url>
+        </repository>
+        <snapshotRepository>
+            <id>github</id>
+            <url>D:\Program Files\apache-maven-3.8.2\maven-repository</url>
+<!--            <url>C:\Users\28124\.m2\repository</url>-->
+        </snapshotRepository>
+    </distributionManagement>
+
+
+    <build>
+    <pluginManagement>
+        <plugins>
+            <!--github上传插件,用于修改后的发布,执行mvn clean deploy自动打包上传到github-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <configuration>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <altDeploymentRepository>internal.repo::default::file://${repository.directory}/tric_build</altDeploymentRepository>
+                </configuration>
+            </plugin>
+
+<!--            在pom.xml文件中的 build->plugins标签下添加-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-deploy-plugin</artifactId>-->
+<!--                <version>2.8.2</version>-->
+<!--            </plugin>-->
+
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.12</version>
+                <configuration>
+                    <message>Maven artifacts for ${project.artifactId}-${project.version}</message>
+                    <noJekyll>true</noJekyll>
+                    <outputDirectory>${repository.directory}/tric_build</outputDirectory>
+                    <branch>refs/heads/master</branch>
+                    <merge>true</merge>
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                    <repositoryName>tric_build</repositoryName>
+                    <repositoryOwner>Zone-lzy</repositoryOwner>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+    </build>
+
+</project>
